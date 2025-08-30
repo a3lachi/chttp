@@ -13,9 +13,12 @@ src/
 ├── utils/
 │   ├── utils.h      - HTTP request parsing utilities header
 │   └── utils.c      - HTTP request parsing utilities implementation
+├── metrics/
+│   ├── metrics.h    - Request timing metrics header
+│   └── metrics.c    - Request timing metrics implementation
 └── client/
     ├── client.h     - Test client header
-    └── client.c     - Test client implementation
+    └── client.c     - Test client implementation with metrics
 Makefile             - Build configuration
 ```
 
@@ -92,7 +95,8 @@ The server implements a basic HTTP server using TCP sockets with request type de
 - Request logging to console with method identification
 - Port 8080 binding
 - Proper HTTP/1.1 response headers
-- Test client for automated testing
+- Test client with performance metrics
+- Client-side request timing measurement (round-trip time)
 
 ## Requirements
 
