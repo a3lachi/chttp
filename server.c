@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include "utils.h"
 
 int main() {
     int server_fd, // server's socket file descriptor
@@ -41,7 +42,14 @@ int main() {
         } // accept blocks until a client connects and return a new socket just for the client
         read(client_fd, buffer, sizeof(buffer)); // get the HTTP request into buffer
         
-        printf("Request:\n%s\n", buffer); 
+        // printf("Request:\n%s\n", buffer); 
+
+        if (is_get_request(buffer)) {
+            printf("SERVER RECEIVED A GET REQUEST\n");
+        } else if (is_post_request(buffer)) {
+            printf("SERVER RECEIVED A POST REQUEST\n");
+        }
+    
 
         char response[] =          // raw HTTP response
             "HTTP/1.1 200 OK\r\n"   // status line
