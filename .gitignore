@@ -1,5 +1,6 @@
 # Compiled binaries
 server
+client
 
 # Object files
 *.o
@@ -33,6 +34,7 @@ Thumbs.db
 *.swo
 .vscode/
 .idea/
+.claude/
 
 # Logs
 *.log
