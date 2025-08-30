@@ -53,12 +53,8 @@ int main() {
                 "\r\n"
                 "You sent a GET request";   // body 
             printf("%s\n",response);
-            ssize_t bytes_written = write(client_fd, response,
-            sizeof(response)-1);
-            if (bytes_written == -1) {
+            if (write(client_fd, response, sizeof(response)-1)<0) {
                 perror("Write failed");
-            } else {
-                printf("%d written.\n",bytes_written);
             }
         } else if (is_post_request(buffer)) {
             printf("== SERVER RECEIVED A POST REQUEST\n");
@@ -68,7 +64,9 @@ int main() {
                 "Content-Length: 22\r\n"
                 "\r\n"
                 "You sent a POST request";   // body 
-            write(client_fd, response, sizeof(response)-1);
+            if (write(client_fd, response, sizeof(response)-1)<0) {
+                perror("Write failed");
+            }
         } else if (is_put_request(buffer)) {
             printf("== SERVER RECEIVED A PUT REQUEST\n");
             char response[] =          // raw HTTP response
@@ -76,8 +74,10 @@ int main() {
                 "Content-Type: text/html\r\n"   // headers
                 "Content-Length: 20\r\n"
                 "\r\n"
-                "You sent a PUT request";   // body 
-            write(client_fd, response, sizeof(response)-1);
+                "You sent a PUT request";   // body
+            if (write(client_fd, response, sizeof(response)-1)<0) {
+                perror("Write failed");
+            } 
         } else {
             printf("== SERVER RECEIVED AN UNKNOWN REQUEST\n");
             char response[] =          // raw HTTP response
@@ -86,7 +86,9 @@ int main() {
                 "Content-Length: 24\r\n"
                 "\r\n"
                 "You sent an unknown request";   // body 
-            write(client_fd, response, sizeof(response)-1);
+            if (write(client_fd, response, sizeof(response)-1)<0) {
+                perror("Write failed");
+            }
         }
         
         close(client_fd);  // closes the connection
