@@ -1,10 +1,12 @@
 #include "client.h"
+#include "metrics.h"
 
 int send_request(const char* method, const char* host, int port, const char* path) {
     int sock;
     struct sockaddr_in server_addr;
     char request[1024];
     char response[4096];
+    request_metrics_t metrics;
     
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("Socket creation failed");
@@ -26,6 +28,8 @@ int send_request(const char* method, const char* host, int port, const char* pat
         return -1;
     }
     
+    metrics_start_request(&metrics);
+    
     snprintf(request, sizeof(request), 
         "%s %s HTTP/1.1\r\n"
         "Host: %s:%d\r\n"
@@ -43,12 +47,16 @@ int send_request(const char* method, const char* host, int port, const char* pat
     printf("%s\n", request);
     
     ssize_t bytes_received = recv(sock, response, sizeof(response) - 1, 0);
+    metrics_end_request(&metrics);
+    
     if (bytes_received < 0) {
         perror("Receive failed");
     } else {
         response[bytes_received] = '\0';
         printf("=== Server Response ===\n");
-        printf("%s\n\n", response);
+        printf("%s\n", response);
+        metrics_print_request_time(&metrics, method);
+        printf("\n");
     }
     
     close(sock);

@@ -52,7 +52,6 @@ int main() {
                 "Content-Length: 22\r\n"
                 "\r\n"
                 "You sent a GET request";   // body 
-            printf("%s\n",response);
             if (write(client_fd, response, sizeof(response)-1)<0) {
                 perror("Write failed");
             }
@@ -77,7 +76,7 @@ int main() {
                 "You sent a PUT request";   // body
             if (write(client_fd, response, sizeof(response)-1)<0) {
                 perror("Write failed");
-            } 
+            }
         } else {
             printf("== SERVER RECEIVED AN UNKNOWN REQUEST\n");
             char response[] =          // raw HTTP response
