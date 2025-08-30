@@ -1,6 +1,6 @@
 # Compiled binaries
-server
-client
+./server
+./client
 
 # Object files
 *.o
